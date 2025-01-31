@@ -39,7 +39,6 @@ public class AuthService {
         } else {
             throw new RuntimeException("Failed to authenticate. Status Code: " + response.getStatusCode());
         }
-
     }
 }
 

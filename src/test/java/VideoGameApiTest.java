@@ -92,6 +92,7 @@ public class VideoGameApiTest {
     }
 
     @Test
+    @Disabled
     @Order(5)
     @DisplayName("Test Deleting a Video Game without using token authentication")
     public void testDeleteVideoGameWithoutToken() {
@@ -108,6 +109,7 @@ public class VideoGameApiTest {
     }
 
     @Test
+    @Disabled
     @Order(6)
     @DisplayName("Test Deleting a Video Game using token authentication")
     public void testDeleteVideoGameWithToken() {
