@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","297","Test Creating a Video Game using token authentication","","Fri Jan 31 17:27:17 GMT 2025","passed","Fri Jan 31 17:27:17 GMT 2025","","tests.VideoGameApiTest","tests.VideoGameApiTest","testCreateVideoGameWithToken"
+"","269","Test Deleting a Video Game without using token authentication","","Fri Jan 31 17:27:18 GMT 2025","passed","Fri Jan 31 17:27:18 GMT 2025","","tests.VideoGameApiTest","tests.VideoGameApiTest","testDeleteVideoGameWithoutToken"
+"","293","Test Creating a Video Game without using token authentication","","Fri Jan 31 17:27:16 GMT 2025","passed","Fri Jan 31 17:27:17 GMT 2025","","tests.VideoGameApiTest","tests.VideoGameApiTest","testCreateVideoGameWithoutToken"
+"","303","Test Retrieving a Video Game using token authentication","","Fri Jan 31 17:27:17 GMT 2025","passed","Fri Jan 31 17:27:18 GMT 2025","","tests.VideoGameApiTest","tests.VideoGameApiTest","testGetVideoGameWithToken"
+"","305","Test Deleting a Video Game using token authentication","","Fri Jan 31 17:27:18 GMT 2025","passed","Fri Jan 31 17:27:18 GMT 2025","","tests.VideoGameApiTest","tests.VideoGameApiTest","testDeleteVideoGameWithToken"
+"","369","Test Retrieving a Video Game without using token authentication","","Fri Jan 31 17:27:17 GMT 2025","passed","Fri Jan 31 17:27:17 GMT 2025","","tests.VideoGameApiTest","tests.VideoGameApiTest","testGetVideoGameWithoutToken"
