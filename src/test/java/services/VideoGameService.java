@@ -1,4 +1,7 @@
+package services;
+
 import com.google.gson.JsonObject;
+import configs.Configuration;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.slf4j.Logger;

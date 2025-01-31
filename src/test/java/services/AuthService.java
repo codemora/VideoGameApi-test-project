@@ -1,4 +1,7 @@
+package services;
+
 import com.google.gson.JsonObject;
+import configs.Configuration;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
@@ -16,9 +19,23 @@ public class AuthService {
     public static String getAuthToken() {
         logger.info("Authenticating with API to obtain JWT token...");
 
+        Response response = getAuthToken(USERNAME,PASSWORD);
+
+        if (response.getStatusCode() == 200) {
+            String token = response.jsonPath().getString("token");
+            logger.info("Successfully obtained JWT token.");
+            return token;
+        } else {
+            throw new RuntimeException("Failed to authenticate. Status Code: " + response.getStatusCode());
+        }
+    }
+
+    public static Response getAuthToken(String username, String password) {
+        logger.info("Authenticating with user: {}", username);
+
         JsonObject requestBody = new JsonObject();
-        requestBody.addProperty("username", USERNAME);
-        requestBody.addProperty("password", PASSWORD);
+        requestBody.addProperty("username", username);
+        requestBody.addProperty("password", password);
 
         Response response = RestAssured.given()
                 .baseUri(BASE_URL)
@@ -32,13 +49,7 @@ public class AuthService {
 
         logger.info("Authentication Response: Status Code = {}, Body = {}", response.getStatusCode(), response.asString());
 
-        if (response.getStatusCode() == 200) {
-            String token = response.jsonPath().getString("token");
-            logger.info("Successfully obtained JWT token.");
-            return token;
-        } else {
-            throw new RuntimeException("Failed to authenticate. Status Code: " + response.getStatusCode());
-        }
+        return response;
     }
 }
 
