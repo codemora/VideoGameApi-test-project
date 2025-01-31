@@ -1,8 +1,12 @@
+package tests;
+
 import com.google.gson.JsonObject;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import services.AuthService;
+import services.VideoGameService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class VideoGameApiTest {
     
     private static final Logger logger = LoggerFactory.getLogger(VideoGameApiTest.class);
-    private static int gameId = 1;
+    private static final int gameId = 1;
 
     @BeforeAll
     public static void setup(){
