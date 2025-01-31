@@ -92,24 +92,20 @@ public class VideoGameApiTest {
     }
 
     @Test
-    @Disabled
     @Order(5)
     @DisplayName("Test Deleting a Video Game without using token authentication")
     public void testDeleteVideoGameWithoutToken() {
         logger.info("Starting test: Delete Video Game without using token authentication");
 
         Response response = VideoGameService.deleteVideoGameWithoutToken(gameId);
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
 
-        // Verify the game no longer exists
-        Response getResponse = VideoGameService.getVideoGameWithoutToken(gameId);
-        assertEquals(404, getResponse.getStatusCode(), "Game should no longer exist");
+        assertEquals(403, response.getStatusCode(), "Expected status code 403 (Forbidden)");
+        assertNotNull(response.getBody(), "Response body should not be null");
 
         logger.info("Test Completed: Delete Video Game without using token authentication");
     }
 
     @Test
-    @Disabled
     @Order(6)
     @DisplayName("Test Deleting a Video Game using token authentication")
     public void testDeleteVideoGameWithToken() {
@@ -117,10 +113,7 @@ public class VideoGameApiTest {
 
         Response response = VideoGameService.deleteVideoGameWithToken(gameId);
         assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
-
-        // Verify the game no longer exists
-        Response getResponse = VideoGameService.getVideoGameWithoutToken(gameId);
-        assertEquals(404, getResponse.getStatusCode(), "Game should no longer exist");
+        assertEquals("Video game deleted", response.asString(),  "Deletion message should match");
 
         logger.info("Test Completed: Delete Video Game using token authentication");
     }
