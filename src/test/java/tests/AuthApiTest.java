@@ -1,5 +1,7 @@
 package tests;
 
+import configs.Configuration;
+import entities.User;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AuthApiTest {
     private static final Logger logger = LoggerFactory.getLogger(AuthApiTest.class);
+    private static final String USERNAME = Configuration.getProperty("username");
+    private static final String PASSWORD = Configuration.getProperty("password");
 
     @Test
     @Order(1)
@@ -18,11 +22,14 @@ public class AuthApiTest {
     public void testAuthWithValidCredentials() {
         logger.info("Starting test: Valid Authentication");
 
-        Response response = AuthService.getAuthToken("admin", "admin");
+        User user = new User(USERNAME, PASSWORD);
+
+        Response response = AuthService.getAuthToken(user.toJson());
 
         assertEquals(200, response.getStatusCode(), "Expected HTTP status 200");
         assertNotNull(response.jsonPath().getString("token"), "Token should not be null for valid credentials");
-        logger.info("Test Passed: Received valid token.");
+
+        logger.info("Test completed: Valid Authentication");
     }
 
     @Test
@@ -31,11 +38,14 @@ public class AuthApiTest {
     public void testAuthWithInvalidCredentials() {
         logger.info("Starting test: Invalid Authentication");
 
-        Response response = AuthService.getAuthToken("wrongUser", "wrongPass");
+        User user = new User("wrongUser", "wrongUser");
 
-        assertEquals(403, response.getStatusCode(), "Expected HTTP status 401 for invalid credentials");
+        Response response = AuthService.getAuthToken(user.toJson());
+
+        assertEquals(401, response.getStatusCode(), "Expected HTTP status 401 for invalid credentials");
         assertNull(response.jsonPath().getString("token"), "Token should be null for invalid credentials");
-        logger.info("Test Passed: Authentication failed as expected.");
+
+        logger.info("Test completed: Invalid Authentication");
     }
 
     @Test
@@ -44,11 +54,14 @@ public class AuthApiTest {
     public void testAuthWithMissingUsername() {
         logger.info("Starting test: Missing Username");
 
-        Response response = AuthService.getAuthToken("", "admin");
+        User user = new User("", "admin");
+
+        Response response = AuthService.getAuthToken(user.toJson());
 
         assertEquals(400, response.getStatusCode(), "Expected HTTP status 400 for missing username");
         assertNull(response.jsonPath().getString("token"), "Token should be null for missing username");
-        logger.info("Test Passed: Authentication failed as expected.");
+
+        logger.info("Test completed: Missing Username");
     }
 
     @Test
@@ -57,10 +70,13 @@ public class AuthApiTest {
     public void testAuthWithMissingPassword() {
         logger.info("Starting test: Missing Password");
 
-        Response response = AuthService.getAuthToken("admin", "");
+        User user = new User("admin", "");
+
+        Response response = AuthService.getAuthToken(user.toJson());
 
         assertEquals(400, response.getStatusCode(), "Expected HTTP status 400 for missing password");
         assertNull(response.jsonPath().getString("token"), "Token should be null for missing password");
-        logger.info("Test Passed: Authentication failed as expected.");
+
+        logger.info("Test completed: Missing Password");
     }
 }

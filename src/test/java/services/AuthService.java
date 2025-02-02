@@ -2,6 +2,8 @@ package services;
 
 import com.google.gson.JsonObject;
 import configs.Configuration;
+import configs.RestAssuredConfig;
+import entities.User;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.slf4j.Logger;
@@ -11,7 +13,6 @@ public class AuthService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
-    private static final String BASE_URL = Configuration.getProperty("base.url");
     private static final String AUTH_ENDPOINT = Configuration.getProperty("auth.endpoint");
     private static final String USERNAME = Configuration.getProperty("username");
     private static final String PASSWORD = Configuration.getProperty("password");
@@ -19,7 +20,9 @@ public class AuthService {
     public static String getAuthToken() {
         logger.info("Authenticating with API to obtain JWT token...");
 
-        Response response = getAuthToken(USERNAME,PASSWORD);
+        User user = new User(USERNAME, PASSWORD);
+
+        Response response = getAuthToken(user.toJson());
 
         if (response.getStatusCode() == 200) {
             String token = response.jsonPath().getString("token");
@@ -30,16 +33,11 @@ public class AuthService {
         }
     }
 
-    public static Response getAuthToken(String username, String password) {
-        logger.info("Authenticating with user: {}", username);
-
-        JsonObject requestBody = new JsonObject();
-        requestBody.addProperty("username", username);
-        requestBody.addProperty("password", password);
+    public static Response getAuthToken(JsonObject requestBody) {
+        logger.info("Authenticating with user: {}", requestBody.get("username"));
 
         Response response = RestAssured.given()
-                .baseUri(BASE_URL)
-                .header("Content-Type", "application/json")
+                .spec(RestAssuredConfig.getRequestSpec())
                 .body(requestBody.toString())
                 .when()
                 .post(AUTH_ENDPOINT)
