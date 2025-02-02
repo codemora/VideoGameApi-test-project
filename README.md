@@ -68,7 +68,7 @@ It includes **authentication, CRUD operations, and error handling tests**.
 
 ### **2️⃣ Clone the Repository**  
 ```sh
-git clone https://github.com/codemora/videogame-api-tests.git
+git clone https://github.com/codemora/fido-test-project.git
 cd videogame-api-tests
 ```
 
@@ -82,7 +82,7 @@ videogame.endpoint=/api/videogame
 
 ### **4️⃣ Install Dependencies**  
 ```sh
-mvn clean install
+mvn clean install -U
 ```
 
 ---  
