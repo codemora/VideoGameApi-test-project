@@ -18,6 +18,9 @@ public class VideoGameApiTest {
     
     private static final Logger logger = LoggerFactory.getLogger(VideoGameApiTest.class);
     private static final int gameId = 1;
+    private static final int STATUS_OK = 200;
+    private static final int STATUS_FORBIDDEN = 403;
+    private static final int STATUS_NOT_FOUND = 404;
     private final VideoGame game = new VideoGame("Mario", "2012-05-04", 85, "Platform", "Mature");
 
     @BeforeAll
@@ -33,7 +36,7 @@ public class VideoGameApiTest {
 
         Response response = VideoGameService.createVideoGameWithoutAuth(game.toJson());
 
-        assertEquals(403, response.getStatusCode(), "Expected status code 403 (Forbidden)");
+        assertEquals(STATUS_FORBIDDEN, response.getStatusCode(), "Expected status code 403 (Forbidden)");
         assertNotNull(response.getBody(), "Response body should not be null");
 
         logger.info("Test Completed: Create Video Game without using token authentication");
@@ -49,7 +52,7 @@ public class VideoGameApiTest {
 
         VideoGame actualGame = response.as(VideoGame.class);
 
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertNotNull(response.getBody(), "Response body should not be null");
         assertEquals(0, actualGame.getId(), "Game ID should match");
         assertEquals(game.getName(), actualGame.getName(), "Game name should be match");
@@ -74,7 +77,7 @@ public class VideoGameApiTest {
         List<VideoGame> actualGames = response.jsonPath().getList(".", VideoGame.class);
         VideoGame actualGame = actualGames.getFirst();
 
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertEquals(10, actualGames.size(), "Expected total games should be 10");
         assertEquals(gameId, actualGame.getId(), "Game ID should match");
         assertEquals(game.getName(), actualGame.getName(), "Game name should be match");
@@ -88,9 +91,9 @@ public class VideoGameApiTest {
 
     @Test
     @Order(4)
-    @DisplayName("Test Retrieving a Video Game without using token authentication")
+    @DisplayName("Test Retrieving a Video Game using token authentication")
     public void testGetVideoGamesWithAuth() {
-        logger.info("Starting test: Get all Video Game with using token authentication");
+        logger.info("Starting test: Get all Video Game using token authentication");
 
         VideoGame game = new VideoGame("Resident Evil 4", "2005-10-01 23:59:59", 85, "Shooter", "Universal");
 
@@ -99,7 +102,7 @@ public class VideoGameApiTest {
         List<VideoGame> actualGames = response.jsonPath().getList(".", VideoGame.class);
         VideoGame actualGame = actualGames.getFirst();
 
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertEquals(10, actualGames.size(), "Expected total games should be 10");
         assertEquals(gameId, actualGame.getId(), "Game ID should match");
         assertEquals(game.getName(), actualGame.getName(), "Game name should be match");
@@ -108,7 +111,7 @@ public class VideoGameApiTest {
         assertEquals(game.getCategory(), actualGame.getCategory(), "Category should match");
         assertEquals(game.getRating(), actualGame.getRating(), "Rating should match");
 
-        logger.info("Test Completed: Get all Video Game with using token authentication");
+        logger.info("Test Completed: Get all Video Game using token authentication");
     }
 
     @Test
@@ -123,7 +126,7 @@ public class VideoGameApiTest {
 
         VideoGame actualGame = response.as(VideoGame.class);
 
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertEquals(gameId, actualGame.getId(), "Game ID should match");
         assertEquals(game.getName(), actualGame.getName(), "Game name should be match");
         assertEquals(game.getReleaseDate(), actualGame.getReleaseDate(), "Release date should match");
@@ -146,7 +149,7 @@ public class VideoGameApiTest {
 
         VideoGame actualGame = response.as(VideoGame.class);
 
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertEquals(gameId, actualGame.getId(), "Game ID should match");
         assertEquals(game.getName(), actualGame.getName(), "Game name should be match");
         assertEquals(game.getReleaseDate(), actualGame.getReleaseDate(), "Release date should match");
@@ -159,16 +162,16 @@ public class VideoGameApiTest {
 
     @Test
     @Order(7)
-    @DisplayName("Test Update Non-Existent VideoGame")
+    @DisplayName("Test Get Non-Existent VideoGame")
     public void testGetNonExistentVideoGame() {
         logger.info("Starting test: Get Non-Existent VideoGame");
 
         Response response = VideoGameService.getVideoGameWithAuth(9999);
 
-        assertEquals(404, response.getStatusCode(), "Expected HTTP status 404 for non-existent videogame");
+        assertEquals(STATUS_NOT_FOUND, response.getStatusCode(), "Expected HTTP status 404 for non-existent videogame");
         assertNotNull(response.getBody(), "Response body should not be null");
 
-        logger.info("Test Complete: Get Non-Existent VideoGame");
+        logger.info("Test Completed: Get Non-Existent VideoGame");
     }
 
     @Test
@@ -181,7 +184,7 @@ public class VideoGameApiTest {
 
         VideoGame actualGame = response.as(VideoGame.class);
 
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertNotNull(response.getBody(), "Response body should not be null");
         assertEquals(gameId, actualGame.getId(), "Game ID should match");
         assertEquals(game.getName(), actualGame.getName(), "Game name should be match");
@@ -190,7 +193,7 @@ public class VideoGameApiTest {
         assertEquals(game.getCategory(), actualGame.getCategory(), "Category should match");
         assertEquals(game.getRating(), actualGame.getRating(), "Rating should match");
 
-        logger.info("Test Complete: Update VideoGame using token authentication");
+        logger.info("Test Completed: Update VideoGame using token authentication");
     }
 
     @Test
@@ -201,24 +204,24 @@ public class VideoGameApiTest {
 
         Response response = VideoGameService.updateVideoGameWithoutAuth(gameId, game.toJson());
 
-        assertEquals(403, response.getStatusCode(), "Expected status code 403 (Forbidden)");
+        assertEquals(STATUS_FORBIDDEN, response.getStatusCode(), "Expected status code 403 (Forbidden)");
         assertNotNull(response.getBody(), "Response body should not be null");
 
-        logger.info("Test Complete: Update VideoGame without using token authentication");
+        logger.info("Test Completed: Update VideoGame without using token authentication");
     }
 
     @Test
     @Order(10)
-    @DisplayName("Test Update Non-Existent VideoGame")
+    @DisplayName("Test Delete Non-Existent VideoGame")
     public void testUpdateNonExistentVideoGame() {
         logger.info("Starting test: Update Non-Existent VideoGame");
 
         Response response = VideoGameService.updateVideoGameWithAuth(9999, game.toJson());
 
-        assertEquals(404, response.getStatusCode(), "Expected HTTP status 404 for non-existent videogame");
+        assertEquals(STATUS_NOT_FOUND, response.getStatusCode(), "Expected HTTP status 404 for non-existent videogame");
         assertNotNull(response.getBody(), "Response body should not be null");
 
-        logger.info("Test Complete: Update Non-Existent VideoGame");
+        logger.info("Test Completed: Update Non-Existent VideoGame");
     }
 
     @Test
@@ -229,7 +232,7 @@ public class VideoGameApiTest {
 
         Response response = VideoGameService.deleteVideoGameWithoutAuth(gameId);
 
-        assertEquals(403, response.getStatusCode(), "Expected status code 403 (Forbidden)");
+        assertEquals(STATUS_FORBIDDEN, response.getStatusCode(), "Expected status code 403 (Forbidden)");
         assertNotNull(response.getBody(), "Response body should not be null");
 
         logger.info("Test Completed: Delete Video Game without using token authentication");
@@ -242,7 +245,7 @@ public class VideoGameApiTest {
         logger.info("Starting test: Delete Video Game using token authentication");
 
         Response response = VideoGameService.deleteVideoGameWithAuth(gameId);
-        assertEquals(200, response.getStatusCode(), "Expected status code 200 (OK)");
+        assertEquals(STATUS_OK, response.getStatusCode(), "Expected status code 200 (OK)");
         assertEquals("Video game deleted", response.asString(),  "Deletion message should match");
 
         logger.info("Test Completed: Delete Video Game using token authentication");
@@ -250,15 +253,15 @@ public class VideoGameApiTest {
 
     @Test
     @Order(13)
-    @DisplayName("Test Update Non-Existent VideoGame")
+    @DisplayName("Test Delete Non-Existent VideoGame")
     public void testDeleteNonExistentVideoGame() {
         logger.info("Starting test: Delete Non-Existent VideoGame");
 
         Response response = VideoGameService.deleteVideoGameWithAuth(9999);
 
-        assertEquals(404, response.getStatusCode(), "Expected HTTP status 404 for non-existent videogame");
+        assertEquals(STATUS_NOT_FOUND, response.getStatusCode(), "Expected HTTP status 404 for non-existent videogame");
         assertNotNull(response.getBody(), "Response body should not be null");
 
-        logger.info("Test Complete: Delete Non-Existent VideoGame");
+        logger.info("Test Completed: Delete Non-Existent VideoGame");
     }
 }
