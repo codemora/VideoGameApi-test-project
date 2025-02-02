@@ -68,7 +68,7 @@ It includes **authentication, CRUD operations, and error handling tests**.
 
 ### **2️⃣ Clone the Repository**  
 ```sh
-git clone https://github.com/YOUR_GITHUB_USERNAME/videogame-api-tests.git
+git clone https://github.com/codemora/videogame-api-tests.git
 cd videogame-api-tests
 ```
 
