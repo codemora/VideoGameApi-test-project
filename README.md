@@ -101,9 +101,18 @@ mvn -Dtest=VideogameTest test
 
 ### **3️⃣ Generate Allure Report**  
 ```sh
+mvn allure:report
+```
+- The generated report will be located at:
+  ```sh
+  target/site/allure-maven-plugin/index.html
+  ```
+
+### **4️⃣ Generate and Serve Allure Report**  
+Run the following command to generate the report and automatically open it in the browser:
+```sh
 mvn allure:serve
 ```
-
 ---  
 
 ## ✅ Test Cases Covered  
