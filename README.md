@@ -96,7 +96,7 @@ mvn test
 
 ### **2️⃣ Run a Specific Test Class**  
 ```sh
-mvn -Dtest=VideogameTest test
+mvn -Dtest=VideogameApiTest test
 ```
 
 ### **3️⃣ Generate Allure Report**  
