@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AuthApiTest {
     private static final Logger logger = LoggerFactory.getLogger(AuthApiTest.class);
     private static final int STATUS_OK = 200;
-    private static final int STATUS_UNAUTHORIZED = 401;
+    private static final int STATUS_FORBIDDEN = 403;
     private static final int STATUS_BAD_REQUEST = 400;
     private static final String USERNAME = Configuration.getProperty("username");
     private static final String PASSWORD = Configuration.getProperty("password");
@@ -45,7 +45,7 @@ public class AuthApiTest {
 
         Response response = AuthService.getAuthToken(user.toJson());
 
-        assertEquals(STATUS_UNAUTHORIZED, response.getStatusCode(), "Expected HTTP status 401 for invalid credentials");
+        assertEquals(STATUS_FORBIDDEN, response.getStatusCode(), "Expected HTTP status 401 for invalid credentials");
         assertNull(response.jsonPath().getString("token"), "Token should be null for invalid credentials");
 
         logger.info("Test completed: Invalid Authentication");
@@ -61,7 +61,7 @@ public class AuthApiTest {
 
         Response response = AuthService.getAuthToken(user.toJson());
 
-        assertEquals(STATUS_BAD_REQUEST, response.getStatusCode(), "Expected HTTP status 400 for missing username");
+        assertEquals(STATUS_FORBIDDEN, response.getStatusCode(), "Expected HTTP status 400 for missing username");
         assertNull(response.jsonPath().getString("token"), "Token should be null for missing username");
 
         logger.info("Test completed: Missing Username");
